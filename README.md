@@ -1,5 +1,8 @@
 # X Dim Mode
 
+> **Now available on the Chrome Web Store!** The easiest way to install — one click, automatic updates.
+> **[Install X Dim Mode →](https://chromewebstore.google.com/detail/x-dim-mode/cplloghlcgkjkogmbehmkhlleopnfogc)**
+
 Chrome extension that restores the Dim (dark blue) background option to X/Twitter display settings.
 
 ![X Dim Mode icon](icons/icon128.png)
@@ -14,8 +17,8 @@ X removed the Dim background option from Display settings. This extension brings
 
 ## Install
 
-### Chrome Web Store
-Coming soon.
+### Chrome Web Store (recommended)
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/x-dim-mode/cplloghlcgkjkogmbehmkhlleopnfogc)** — one click to install, updates automatically.
 
 ### Manual install (takes 30 seconds)
 1. [Download this repo as a ZIP](https://github.com/juanbuis/x-dim-mode/archive/refs/heads/main.zip) and unzip it
