@@ -218,7 +218,13 @@ function startObserver() {
 
 // Init
 chrome.storage.local.get("enabled", ({ enabled }) => {
-  if (enabled) applyDim();
+  if (enabled === undefined) {
+    // First install — auto-enable
+    chrome.storage.local.set({ enabled: true });
+    applyDim();
+  } else if (enabled) {
+    applyDim();
+  }
   startObserver();
   tryInjectDimOption();
 });
