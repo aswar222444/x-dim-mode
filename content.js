@@ -9,6 +9,7 @@ const BASE_CSS = `
   html.${DIM_CLASS} {
     --xdm-bg: rgb(21, 32, 43);
     --xdm-bg-hover: rgb(30, 39, 50);
+    --xdm-bg-elevated: rgb(39, 51, 64);
     --xdm-backdrop: rgba(21, 32, 43, .85);
     --xdm-text: rgb(139, 152, 165);
     --xdm-border: rgb(56, 68, 77);
@@ -22,18 +23,40 @@ const BASE_CSS = `
     --border-color: var(--xdm-border);
   }
 
-  /* Chat button */
-  html.${DIM_CLASS} :root[data-theme="dark"] {
-    --background: 215, 29%, 13%;
-    --border: 206, 16%, 26%;
+  /* Chat / DM interface (Tailwind + shadcn/Radix) */
+  html.${DIM_CLASS}[data-theme="dark"],
+  html.${DIM_CLASS} [data-theme="dark"] {
+    --background: 215 29% 13%;
+    --border: 206 16% 26%;
+    --input: 206 16% 26%;
+    --muted-foreground: 206 16% 55%;
+    --color-background: 215 29% 13%;
+    --color-gray-0: 215 29% 13%;
+    --color-gray-50: 206 16% 26%;
+    --color-gray-100: 206 16% 26%;
+    --color-gray-700: 206 16% 60%;
+    --color-gray-800: 206 16% 50%;
   }
 
   /* ── Black background overrides ── */
+
+  /* Body — catches class-based black bg (e.g. Creator Studio) */
+  html.${DIM_CLASS} body {
+    background-color: var(--xdm-bg) !important;
+  }
 
   /* Inline styles (covers body, divs, modals, dropdowns, etc.) */
   html.${DIM_CLASS} [style*="background-color: rgb(0, 0, 0)"],
   html.${DIM_CLASS} [style*="background-color: rgba(0, 0, 0, 1)"] {
     background-color: var(--xdm-bg) !important;
+  }
+  /* Elevated section cards (rgb(24,24,27) in dark mode → slightly lighter in dim) */
+  html.${DIM_CLASS} [style*="background-color: rgb(24, 24, 27)"] {
+    background-color: var(--xdm-bg-hover) !important;
+  }
+  /* Icon containers in menu rows (Premium, etc.) */
+  html.${DIM_CLASS} [role="link"] > div > div:first-child div:has(> svg:only-child) {
+    background-color: var(--xdm-bg-elevated) !important;
   }
 
   /* X utility classes for black backgrounds */
@@ -42,6 +65,10 @@ const BASE_CSS = `
   html.${DIM_CLASS} .r-yfoy6g,
   html.${DIM_CLASS} .r-14lw9ot {
     background-color: var(--xdm-bg) !important;
+  }
+  /* Action-button hover circles — make transparent so they match any parent bg */
+  html.${DIM_CLASS} .r-1niwhzg.r-sdzlij {
+    background-color: transparent !important;
   }
   /* Timeline top bar */
   html.${DIM_CLASS} .r-5zmot {
@@ -55,9 +82,12 @@ const BASE_CSS = `
   html.${DIM_CLASS} .r-1hdo0pc {
     background-color: var(--xdm-bg-hover) !important;
   }
-  /* Secondary background */
+  /* Secondary background (section cards on Premium, etc.) */
   html.${DIM_CLASS} .r-g2wdr4 {
-    background-color: var(--xdm-bg) !important;
+    background-color: var(--xdm-bg-hover) !important;
+  }
+  html.${DIM_CLASS} .r-g2wdr4 [role="link"]:hover {
+    background-color: var(--xdm-bg-elevated) !important;
   }
 
   /* Borders */
@@ -68,7 +98,8 @@ const BASE_CSS = `
   html.${DIM_CLASS} .r-2sztyj {
     border-top-color: var(--xdm-border) !important;
   }
-  html.${DIM_CLASS} .r-1igl3o0 {
+  html.${DIM_CLASS} .r-1igl3o0,
+  html.${DIM_CLASS} .r-rull8r {
     border-bottom-color: var(--xdm-border) !important;
   }
   /* Separators / dividers */
@@ -101,6 +132,10 @@ const BASE_CSS = `
   html.${DIM_CLASS} .bg-gray-0 {
     background-color: var(--xdm-bg) !important;
   }
+  html.${DIM_CLASS} .border-gray-50,
+  html.${DIM_CLASS} .border-gray-100 {
+    border-color: var(--xdm-border) !important;
+  }
 
   /* Grok buttons (active) */
   html.${DIM_CLASS} [style*="border-color: rgb(47, 51, 54)"].r-1che71a {
@@ -111,14 +146,35 @@ const BASE_CSS = `
   html.${DIM_CLASS} .xdm-dimmed {
     background-color: var(--xdm-bg) !important;
   }
+  /* Scanner-discovered elevated backgrounds (e.g. section cards) */
+  html.${DIM_CLASS} .xdm-dimmed-elevated {
+    background-color: var(--xdm-bg-hover) !important;
+  }
+  /* Creator Studio icon containers (jf-element framework) */
+  html.${DIM_CLASS} .jf-element:has(> span:only-child > svg:only-child) {
+    background-color: var(--xdm-bg-elevated) !important;
+  }
+  /* Creator Studio dividers inside elevated section cards */
+  html.${DIM_CLASS} .xdm-dimmed-elevated .jf-element:empty {
+    background-color: var(--xdm-border) !important;
+    border-color: var(--xdm-border) !important;
+  }
+
+  /* Scrollbar */
+  html.${DIM_CLASS} {
+    scrollbar-color: var(--xdm-border) var(--xdm-bg);
+  }
 `;
 
+// Always update the style element — prevents stale CSS after extension reload
 function ensureBaseCSS() {
-  if (document.getElementById(DIM_BASE_ID)) return;
-  const style = document.createElement("style");
-  style.id = DIM_BASE_ID;
-  style.textContent = BASE_CSS;
-  (document.head || document.documentElement).appendChild(style);
+  let style = document.getElementById(DIM_BASE_ID);
+  if (!style) {
+    style = document.createElement("style");
+    style.id = DIM_BASE_ID;
+    (document.head || document.documentElement).appendChild(style);
+  }
+  if (style.textContent !== BASE_CSS) style.textContent = BASE_CSS;
 }
 
 // Inject CSS immediately at document_start — don't wait for async storage read.
@@ -140,13 +196,62 @@ function removeDim() {
     _pending.clear();
   }
   // Remove scanner-applied classes (non-destructive — doesn't touch original styles)
-  for (const el of document.querySelectorAll(".xdm-dimmed")) {
-    el.classList.remove("xdm-dimmed");
+  for (const el of document.querySelectorAll(".xdm-dimmed, .xdm-dimmed-elevated")) {
+    el.classList.remove("xdm-dimmed", "xdm-dimmed-elevated");
+  }
+}
+
+// ── System Theme Sync ─────────────────────────────────────────────
+// Follows OS preference: dark → Dim, light → Default.
+// Watches body.LightsOut (X's dark mode class) to detect theme state.
+
+let _bodyObserver;
+let _suspendedForLight = false;
+
+function syncDimWithTheme() {
+  if (!_enabled || !document.body) return;
+  const hasLightsOut = document.body.classList.contains("LightsOut");
+  const dimActive = document.documentElement.classList.contains(DIM_CLASS);
+  if (hasLightsOut) {
+    // X is in dark mode → activate dim
+    _suspendedForLight = false;
+    if (!dimActive) {
+      applyDim();
+      for (const ms of [500, 1500, 3000, 5000]) setTimeout(fullRescan, ms);
+    }
+  } else if (dimActive && _seenLightsOut) {
+    // X switched to light mode (LightsOut was present, now removed) → suspend dim
+    _suspendedForLight = true;
+    removeDim();
+  }
+}
+
+// Track whether X has ever been in dark mode this session.
+// Prevents removing dim before X has finished initializing.
+let _seenLightsOut = false;
+
+function startBodyObserver() {
+  if (_bodyObserver || !document.body) return;
+  if (document.body.classList.contains("LightsOut")) _seenLightsOut = true;
+  _bodyObserver = new MutationObserver(() => {
+    if (document.body.classList.contains("LightsOut")) _seenLightsOut = true;
+    syncDimWithTheme();
+  });
+  _bodyObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+}
+
+function stopBodyObserver() {
+  if (_bodyObserver) {
+    _bodyObserver.disconnect();
+    _bodyObserver = null;
   }
 }
 
 // ── Black Background Scanner ─────────────────────────────────────
-// Catches class-based black backgrounds not covered by known CSS selectors.
+// Catches inline black backgrounds not covered by known CSS selectors.
 // Uses a CSS class (not inline styles) so toggling is instant and non-destructive.
 
 let _scanFrame = 0;
@@ -174,16 +279,20 @@ function flushScan() {
 
 function dimSubtree(root) {
   dimElement(root);
-  for (const el of root.querySelectorAll("div,main,aside,header,nav,section,article,footer")) {
+  for (const el of root.querySelectorAll("div,main,aside,header,nav,section,article,footer,button")) {
     dimElement(el);
   }
 }
 
 function dimElement(el) {
-  if (!el || el.nodeType !== 1 || el.classList.contains("xdm-dimmed")) return;
-  const bg = getComputedStyle(el).backgroundColor;
-  if (bg === "rgb(0, 0, 0)") {
+  if (!el || el.nodeType !== 1 || el.classList.contains("xdm-dimmed") || el.classList.contains("xdm-dimmed-elevated")) return;
+  const bg = el.classList.contains("jf-element")
+    ? (() => { try { return getComputedStyle(el).backgroundColor; } catch { return ""; } })()
+    : el.style.backgroundColor;
+  if (bg === "rgb(0, 0, 0)" || bg === "rgba(0, 0, 0, 1)") {
     el.classList.add("xdm-dimmed");
+  } else if (bg === "rgb(24, 24, 27)") {
+    el.classList.add("xdm-dimmed-elevated");
   }
 }
 
@@ -250,52 +359,53 @@ function tryInjectDimOption() {
     input.checked = false;
   }
 
-  // Set initial visual state based on whether dim is enabled
-  chrome.storage.local.get("enabled", ({ enabled }) => {
-    if (enabled) {
-      setSelected(dimBtn);
-      setUnselected(lightsOutBtn);
-    } else {
-      setUnselected(dimBtn);
-    }
-  });
-
   // Insert between Default and Lights Out
   radiogroup.insertBefore(dimBtn, lightsOutBtn);
 
+  // Set initial visual state based on whether dim is enabled
+  chrome.storage.local.get("enabled", ({ enabled }) => {
+    syncSettingsButtons(!!enabled);
+  });
+
   // ── Click handlers ──
 
-  let switchingToDim = false;
-
   dimBtn.addEventListener("click", () => {
-    switchingToDim = true;
-
-    // Ensure Lights Out is the base theme — click it if Default is active
-    const loInput = lightsOutBtn.querySelector('input[type="radio"]');
-    if (loInput && !loInput.checked) {
-      // Click the radio input directly and fire events React listens for
-      loInput.click();
-      loInput.dispatchEvent(new Event("input", { bubbles: true }));
-      loInput.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-
-    // Wait for X to finish applying Lights Out before enabling dim
-    setTimeout(() => {
-      chrome.storage.local.set({ enabled: true });
-      setSelected(dimBtn);
-      setUnselected(defaultBtn);
-      setUnselected(lightsOutBtn);
-      switchingToDim = false;
-    }, 300);
+    chrome.storage.local.set({ enabled: true });
+    syncSettingsButtons(true);
+    activateLightsOut();
   });
 
   // When Default or Lights Out is clicked directly, disable Dim
   for (const nativeBtn of [defaultBtn, lightsOutBtn]) {
     nativeBtn.addEventListener("click", () => {
-      if (switchingToDim) return; // Ignore clicks triggered by dim switch
+      if (_switchingToDim) return; // Ignore clicks triggered by dim switch
       chrome.storage.local.set({ enabled: false });
       setUnselected(dimBtn);
     });
+  }
+}
+
+// ── Lights Out Helper ──────────────────────────────────────────────
+// Clicks X's Lights Out radio (if the Display settings page is open) to ensure
+// the correct base theme. Used by both the Dim button and the popup toggle.
+
+let _switchingToDim = false;
+
+function activateLightsOut() {
+  const dimBtn = document.getElementById(DIM_BTN_ID);
+  if (!dimBtn) return; // Settings page not open
+  const radiogroup = dimBtn.closest('[role="radiogroup"]');
+  if (!radiogroup) return;
+  const allBtns = radiogroup.querySelectorAll(":scope > div");
+  const lightsOutBtn = allBtns[allBtns.length - 1];
+  if (!lightsOutBtn) return;
+  const loInput = lightsOutBtn.querySelector('input[type="radio"]');
+  if (loInput && !loInput.checked) {
+    _switchingToDim = true;
+    loInput.click();
+    loInput.dispatchEvent(new Event("input", { bubbles: true }));
+    loInput.dispatchEvent(new Event("change", { bubbles: true }));
+    setTimeout(() => { _switchingToDim = false; }, 300);
   }
 }
 
@@ -308,18 +418,22 @@ function startObserver() {
   if (observer) return;
   observer = new MutationObserver((mutations) => {
     try {
-      // Re-apply dim if class was removed by X
-      if (_enabled && !document.documentElement.classList.contains(DIM_CLASS)) {
+      // Re-apply dim if class was removed by X (unless suspended for light mode)
+      if (_enabled && !_suspendedForLight && !document.documentElement.classList.contains(DIM_CLASS)) {
         applyDim();
       }
       // Scan newly added nodes for black backgrounds
-      if (_enabled) {
+      if (_enabled && document.documentElement.classList.contains(DIM_CLASS)) {
         for (const m of mutations) {
           if (m.addedNodes.length) queueScan(m.addedNodes);
         }
       }
       // Try to inject the Dim button on the display settings page
       tryInjectDimOption();
+      // Start body observer once body is available
+      if (_enabled && document.body && !_bodyObserver) {
+        startBodyObserver();
+      }
     } catch {
       // Extension context invalidated after reload — clean up
       observer.disconnect();
@@ -331,28 +445,72 @@ function startObserver() {
   });
 }
 
+// Re-scan the entire body to catch elements the initial scan or observer missed
+function fullRescan() {
+  if (_enabled && document.body) queueScan([document.body]);
+}
+
 // Init — single storage read, then use cached state
 chrome.storage.local.get("enabled", ({ enabled }) => {
   if (enabled === undefined) {
     _enabled = true;
     chrome.storage.local.set({ enabled: true });
-    applyDim();
-  } else if (enabled) {
-    _enabled = true;
-    applyDim();
+  } else {
+    _enabled = !!enabled;
   }
+
+  if (_enabled) {
+    // Apply dim immediately if system is dark (avoids flash of black).
+    // If system is light, body observer will handle it once X sets its theme.
+    const systemDark = !window.matchMedia || window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (systemDark) {
+      applyDim();
+      for (const ms of [500, 1500, 3000, 5000]) setTimeout(fullRescan, ms);
+    }
+  }
+
   startObserver();
   tryInjectDimOption();
+
+  // Start body observer if body is already available
+  if (_enabled && document.body) {
+    startBodyObserver();
+  }
 });
+
+// Sync the radio buttons on the Display settings page with the current state
+function syncSettingsButtons(enabled) {
+  const dimBtn = document.getElementById(DIM_BTN_ID);
+  if (!dimBtn) return;
+  const radiogroup = dimBtn.closest('[role="radiogroup"]');
+  if (!radiogroup) return;
+  const allBtns = radiogroup.querySelectorAll(":scope > div");
+  const lightsOutBtn = allBtns[allBtns.length - 1];
+
+  if (enabled) {
+    setSelected(dimBtn);
+    for (const btn of allBtns) {
+      if (btn !== dimBtn) setUnselected(btn);
+    }
+  } else {
+    setUnselected(dimBtn);
+    if (lightsOutBtn) setSelected(lightsOutBtn);
+  }
+}
 
 // Listen for toggle — updates cached state synchronously
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.enabled) {
     _enabled = !!changes.enabled.newValue;
     if (_enabled) {
+      _suspendedForLight = false;
+      startBodyObserver();
       applyDim();
+      activateLightsOut();
     } else {
+      stopBodyObserver();
       removeDim();
     }
+    syncSettingsButtons(_enabled);
   }
 });
