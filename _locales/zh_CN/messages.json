@@ -69,7 +69,7 @@
     "message": "分享到 X"
   },
   "emailHeading": {
-    "message": "想参与决定我们下一步做什么？"
+    "message": "抢先访问我接下来的构建内容"
   },
   "emailNoSpam": {
     "message": "绝不发送垃圾邮件。"
@@ -78,12 +78,24 @@
     "message": "订阅"
   },
   "emailSuccess": {
-    "message": "订阅成功！我们会及时通知你。"
+    "message": "订阅成功！我会及时通知你。"
   },
   "emailError": {
     "message": "出了点问题，请重试。"
   },
   "emailNetworkError": {
     "message": "网络错误，请重试。"
+  },
+  "popupShareLink": {
+    "message": "分享"
+  },
+  "emailPromptHeading": {
+    "message": "看看我接下来要构建的东西"
+  },
+  "engageQuestion": {
+    "message": "喜欢 X Dim Mode 吗？"
+  },
+  "engageRate": {
+    "message": "评价"
   }
 }

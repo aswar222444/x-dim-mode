@@ -69,21 +69,33 @@
     "message": "Поделиться в X"
   },
   "emailHeading": {
-    "message": "Хотите повлиять на то, что мы создадим дальше?"
+    "message": "Получите ранний доступ к тому, что я создам дальше"
   },
   "emailNoSpam": {
-    "message": "Никакого спама."
+    "message": "Никакого спама, никогда."
   },
   "subscribe": {
     "message": "Подписаться"
   },
   "emailSuccess": {
-    "message": "Готово! Мы будем держать вас в курсе."
+    "message": "Готово! Я буду держать вас в курсе."
   },
   "emailError": {
     "message": "Что-то пошло не так. Попробуйте ещё раз."
   },
   "emailNetworkError": {
     "message": "Ошибка сети. Попробуйте ещё раз."
+  },
+  "popupShareLink": {
+    "message": "Поделиться"
+  },
+  "emailPromptHeading": {
+    "message": "Смотрите, что я делаю дальше"
+  },
+  "engageQuestion": {
+    "message": "Нравится X Dim Mode?"
+  },
+  "engageRate": {
+    "message": "Отзыв"
   }
 }

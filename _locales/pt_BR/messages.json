@@ -69,7 +69,7 @@
     "message": "Compartilhar no X"
   },
   "emailHeading": {
-    "message": "Quer opinar sobre o que criamos a seguir?"
+    "message": "Acesse antes o que estou construindo a seguir"
   },
   "emailNoSpam": {
     "message": "Sem spam, nunca."
@@ -78,12 +78,24 @@
     "message": "Inscrever-se"
   },
   "emailSuccess": {
-    "message": "Pronto! Vamos mantê-lo informado."
+    "message": "Pronto! Vou mantê-lo informado."
   },
   "emailError": {
     "message": "Algo deu errado. Tente novamente."
   },
   "emailNetworkError": {
     "message": "Erro de rede. Tente novamente."
+  },
+  "popupShareLink": {
+    "message": "Compartilhar"
+  },
+  "emailPromptHeading": {
+    "message": "Veja o que vou construir depois"
+  },
+  "engageQuestion": {
+    "message": "Curtindo o X Dim Mode?"
+  },
+  "engageRate": {
+    "message": "Avaliar"
   }
 }

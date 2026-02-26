@@ -1,3 +1,5 @@
 cws_assets/
+dist/
+build.sh
 *.zip
 .DS_Store

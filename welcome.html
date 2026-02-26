@@ -95,7 +95,8 @@
     /* Feature list */
     .features {
       list-style: none;
-      margin-bottom: 28px;
+      margin-bottom: 0;
+      padding-bottom: 4px;
     }
     .features li {
       font-size: 15px;
@@ -163,21 +164,25 @@
 
     /* Email form */
     .email-section {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(29, 155, 240, 0.12);
+      border: 1px solid rgba(29, 155, 240, 0.30);
       border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 0;
+      padding: 24px;
+      margin-top: 28px;
+      text-align: center;
     }
     .email-label {
-      font-size: 14px;
+      font-size: 15px;
       color: #8B98A5;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       line-height: 1.5;
     }
     .email-label strong {
       color: #E7E9EA;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
     }
     .email-row {
       display: flex;
@@ -258,9 +263,9 @@
     <h2 class="heading" id="heading"></h2>
     <p class="subtitle" id="subtitle"></p>
 
-    <ul class="features" id="features"></ul>
-
     <div class="actions" id="actions"></div>
+
+    <ul class="features" id="features"></ul>
 
     <div class="email-section">
       <p class="email-label" id="emailLabel"></p>

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.2
+
+- Share link in popup footer
+- Improved email capture on welcome page
+- Translation fixes
+
+## 1.3.1
+
+- PWA title bar theming
+- Reduced permissions
+
 ## 1.3.0
 
 - **6 color themes** — Dim, Slate, Jade, Plum, Dusk, and Ember
